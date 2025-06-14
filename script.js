@@ -1,58 +1,30 @@
 // Your code here.
-// Select all cubes (items)
-const cubes = document.querySelectorAll('.item');
-const container = document.querySelector('.items');
+const slider = document.querySelector('.items');
+let isDown = false;
+let startX;
+let scrollLeft;
 
-cubes.forEach(cube => {
-  cube.style.position = 'absolute'; // Allow free movement
-  cube.style.cursor = 'grab';
+slider.addEventListener('mousedown', (e) => {
+  isDown = true;
+  slider.classList.add('active');
+  startX = e.pageX - slider.offsetLeft;
+  scrollLeft = slider.scrollLeft;
+});
 
-  // Position cubes initially in a grid
-  const index = [...cubes].indexOf(cube);
-  const row = Math.floor(index / 5);
-  const col = index % 5;
-  cube.style.left = `${col * 210}px`;
-  cube.style.top = `${row * 210}px`;
+slider.addEventListener('mouseleave', () => {
+  isDown = false;
+  slider.classList.remove('active');
+});
 
-  let isDragging = false;
-  let offsetX = 0;
-  let offsetY = 0;
+slider.addEventListener('mouseup', () => {
+  isDown = false;
+  slider.classList.remove('active');
+});
 
-  cube.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    offsetX = e.clientX - cube.offsetLeft;
-    offsetY = e.clientY - cube.offsetTop;
-    cube.style.zIndex = 1000;
-    cube.style.cursor = 'grabbing';
-  });
-
-  document.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-
-    // Calculate new position
-    let newX = e.clientX - offsetX;
-    let newY = e.clientY - offsetY;
-
-    // Boundary constraints
-    const rect = container.getBoundingClientRect();
-    const cubeRect = cube.getBoundingClientRect();
-
-    if (newX < 0) newX = 0;
-    if (newY < 0) newY = 0;
-    if (newX + cube.offsetWidth > container.clientWidth)
-      newX = container.clientWidth - cube.offsetWidth;
-    if (newY + cube.offsetHeight > container.clientHeight)
-      newY = container.clientHeight - cube.offsetHeight;
-
-    cube.style.left = `${newX}px`;
-    cube.style.top = `${newY}px`;
-  });
-
-  document.addEventListener('mouseup', () => {
-    if (isDragging) {
-      isDragging = false;
-      cube.style.cursor = 'grab';
-      cube.style.zIndex = '';
-    }
-  });
+slider.addEventListener('mousemove', (e) => {
+  if (!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - slider.offsetLeft;
+  const walk = (x - startX) * 1.5; // scroll-fast
+  slider.scrollLeft = scrollLeft - walk;
 });
