@@ -25,6 +25,6 @@ items.addEventListener('mousemove', (e) => {
   if (!isDragging) return;
   e.preventDefault();
   const x = e.pageX - items.offsetLeft;
-  const scroll = (x - startX) * 2; // scroll speed multiplier
+  const scroll = (x - startX) * 1.5; // Speed multiplier
   items.scrollLeft = initialScrollLeft - scroll;
 });
