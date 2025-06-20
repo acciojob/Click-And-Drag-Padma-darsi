@@ -1,5 +1,7 @@
 // Your code here.
-const slider = document.querySelector('.items');
+
+
+  const slider = document.querySelector('.items');
 
   let isDown = false;
   let startX;
@@ -26,6 +28,7 @@ const slider = document.querySelector('.items');
     if (!isDown) return;
     e.preventDefault();
     const x = e.pageX - slider.offsetLeft;
-    const walk = (x - startX) * 2; // Multiplier = scroll speed
+    const walk = (x - startX) * 1.5; // adjust scroll speed here
     slider.scrollLeft = scrollLeft - walk;
   });
+
